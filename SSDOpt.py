@@ -27,7 +27,6 @@ print '********************************************************************'
 print '* SSD OPTIMIZATION v0.1 Installer for Mac OS X                     *'
 print '* I\'d be glad to see most of you at our page http://www.dotoca.net *'
 print '********************************************************************'
-print '\n\n'
 
 # check if running on Mac
 mac = (platform.system() == 'Darwin')
@@ -35,7 +34,7 @@ mac = (platform.system() == 'Darwin')
 # check if root, getuid doesn't return 0 if sudoing
 currentUser = commands.getoutput('whoami')
 if currentUser != 'root':
-    print 'Please re-run this installer with root privileges, i.e. "sudo python ./install.py"\n'
+    print 'Please, re-start with ROOT privileges, i.e. "sudo python ./install.py"\n'
     sys.exit()
 
 
