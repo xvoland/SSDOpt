@@ -23,19 +23,20 @@ import commands
 
 os.system('clear')
 
-print '********************************************************************'
-print '* SSD OPTIMIZATION v0.1 Installer for Mac OS X                     *'
-print '* I\'d be glad to see most of you at our page http://www.dotoca.net *'
-print '********************************************************************'
-print '\n\n'
+print "\x1b[1;32m"
+print "********************************************************************"
+print "* SSD OPTIMIZATION v0.1 Installer for Mac OS X                     *"
+print "* I'd be glad to see most of you at our page http://www.dotoca.net *"
+print "********************************************************************"
+print "\x1b[0m"
 
 # check if running on Mac
 mac = (platform.system() == 'Darwin')
 
 # check if root, getuid doesn't return 0 if sudoing
 currentUser = commands.getoutput('whoami')
-if currentUser != 'root':
-    print 'Please re-run this installer with root privileges, i.e. "sudo python ./install.py"\n'
+if currentUser != 'root' and False:
+    print 'Please, re-start with ROOT privileges, i.e. "sudo python ./install.py"\n'
     sys.exit()
 
 
@@ -60,7 +61,7 @@ def yes_no(question, default='yes'):
     else:
         raise ValueError('Invalid default answer: "%s"' % default)
 
-    while 1:
+    while True:
         sys.stdout.write(question + prompt)
         choice = raw_input().lower()
         if default is not None and choice == '':
@@ -70,3 +71,38 @@ def yes_no(question, default='yes'):
         else:
             sys.stdout.write('Please respond: "yes/no" or y/n.\n')
 
+
+def request_input(question, range, default=-1):
+    """
+    Input request value to the user from range
+    with default value if it's set
+
+    return: integer value from range
+    """
+    if default < 0:
+        # if not set default value
+        default = range[0]
+
+    # expect proper input
+    while True:
+        try:
+            enter = raw_input(question + ' : %s' % default + chr(8) * len(str(default)))
+            if not enter:
+                enter = default
+            else:
+                enter = int(enter)
+
+            # entered value in range
+            if enter in range:
+                return enter
+            else:
+                sys.stdout.write('\x1b[1;31m' + 'Error: value must be from %s till %s\x1b[0m\n' % (range[0], range[-1]))
+
+        except ValueError:
+            print('\x1b[1;31m' + 'Error: value must be integer! Please enter correct value' + '\x1b[0m')
+
+
+if __name__ == '__main__':
+    # a = request_input('Please enter size of virtual drive', (4, 50))
+    # print a
+    print 'done'
