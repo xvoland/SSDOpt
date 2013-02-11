@@ -30,17 +30,8 @@ print "* I'd be glad to see most of you at our page http://www.dotoca.net *"
 print "********************************************************************"
 print "\x1b[0m"
 
-# check if running on Mac
-mac = (platform.system() == 'Darwin')
 
-# check if root, getuid doesn't return 0 if sudoing
-currentUser = commands.getoutput('whoami')
-if currentUser != 'root' and False:
-    print 'Please, re-start with ROOT privileges, i.e. "sudo python ./install.py"\n'
-    sys.exit()
-
-
-def yes_no(question, default='yes'):
+def request_yesno(question, default='yes'):
     """
     Question to the user: (yes/no) or (y/n) not case sensitive
 
@@ -80,7 +71,7 @@ def request_input(question, range, default=-1):
     return: integer value from range
     """
     if default < 0:
-        # if not set default value
+        # if not set value by default
         default = range[0]
 
     # expect proper input
@@ -102,7 +93,26 @@ def request_input(question, range, default=-1):
             print('\x1b[1;31m' + 'Error: value must be integer! Please enter correct value' + '\x1b[0m')
 
 
+def run():
+    PATH_TO_SCRIPT = '/Library/StartupItems/RamFS/'
+    SCRIPT_NAME = 'RamFS'
+
+    # check if running on Mac
+    mac = (platform.system() == 'Darwin')
+    
+    # get current username
+    currentUser = commands.getoutput('whoami')
+
+    if os.path.exists(PATH_TO_SCRIPT + SCRIPT_NAME):
+        print('\x1b[1;31m' + 'It appears that the SSDOpt or RamFS has already installed. Please, remove and try again.' + '\x1b[0m')
+
+    # check if sudo, getuid doesn't return 0 if sudoing
+    if os.getuid() != 0:
+        print('\x1b[1;31m' + 'Please, re-start with ROOT privileges, i.e. "sudo python ./install.py"' + '\x1b[0m')
+        exit()
+
+
 if __name__ == '__main__':
     # a = request_input('Please enter size of virtual drive', (4, 50))
     # print a
-    print 'done'
+    run()
