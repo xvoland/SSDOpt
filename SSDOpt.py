@@ -8,18 +8,24 @@ Based on the idea by:
     - Ricardo Gameiro <http://blogs.nullvision.com/?p=357>
     - Daniel Jenkins <http://blogs.nullvision.com/?p=357#comment-1140>
 
+Copyright (c) 2013, Vitalii Tereshchuk. URL: http://dotoca.net
+
 *** ATTENTION !!! ***
 I DON'T TAKE ANY RESPONSIBILITY FOR THE CONSEQUENCES OF SCRIPT.
 HOPE YOU ENJOY USING THIS SCRIPT
 
 Good luck,
     Vitalii Tereshchuk / [xVoLAnD]
+
+
+    @author: Vitalii Tereshchuk
+    @version: 0.1.2
 """
 
 import os
 import sys
-import platform
 import commands
+import platform
 
 os.system('clear')
 
@@ -93,18 +99,32 @@ def request_input(question, range, default=-1):
             print('\x1b[1;31m' + 'Error: value must be integer! Please enter correct value' + '\x1b[0m')
 
 
-def run():
+def main():
+    """
+    So it's begins...
+    """
+
     PATH_TO_SCRIPT = '/Library/StartupItems/RamFS/'
     SCRIPT_NAME = 'RamFS'
 
-    # check if running on Mac
-    mac = (platform.system() == 'Darwin')
-    
+    # get version of MacOS X
+    macos = float('.'.join(
+                        platform.mac_ver()[0]
+                        .split('.')[:2]
+                        )
+    )
+
+    # check running on Mac
+    if platform.system() != 'Darwin' or macos <= 10:
+        print('\x1b[1;31m' + 'This script is designed to run on MacOS >= 10.x' + '\x1b[0m')
+        exit()
+
     # get current username
     currentUser = commands.getoutput('whoami')
 
     if os.path.exists(PATH_TO_SCRIPT + SCRIPT_NAME):
         print('\x1b[1;31m' + 'It appears that the SSDOpt or RamFS has already installed. Please, remove and try again.' + '\x1b[0m')
+        exit()
 
     # check if sudo, getuid doesn't return 0 if sudoing
     if os.getuid() != 0:
@@ -115,4 +135,4 @@ def run():
 if __name__ == '__main__':
     # a = request_input('Please enter size of virtual drive', (4, 50))
     # print a
-    run()
+    main()
